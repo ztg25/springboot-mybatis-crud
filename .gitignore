@@ -1,0 +1,7 @@
+.DS_Store
+.idea/*
+springboot-mybatis-comment/.idea/*
+springboot-mybatis-comment/log/*.log
+springboot-mybatis-comment/target/*
+springboot-mybatis/target/*
+springboot-mybatis/target/log/*.log

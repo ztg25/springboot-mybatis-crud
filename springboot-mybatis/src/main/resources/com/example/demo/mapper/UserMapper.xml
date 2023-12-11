@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace里指定绑定的类 -->
+<mapper namespace="com.example.demo.mapper.UserMapper">
+    <select id="listUsers" resultType="com.example.demo.pojo.User">
+        select *
+        from mybatis.user;
+    </select>
+
+    <!--select id 对应类中具体的方法名，参数及返回值 -->
+    <select id="listUsersByName" parameterType="com.example.demo.pojo.query.UserQuery" resultType="com.example.demo.pojo.User">
+        select *
+        from mybatis.user
+        <where>
+            <if test="name != null and name != ''">
+                and `name` like concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
+
+    <resultMap id="UserDaoResult" type="com.example.demo.pojo.User">
+        <id     property="id"   column="id"   />
+        <result property="name"   column="name"   />
+        <result property="pwd"  column="pwd"  />
+    </resultMap>
+
+    <sql id="selectUserVo">
+        select id, name, pwd from mybatis.user
+    </sql>
+
+    <delete id="deleteUserById" parameterType="int">
+        delete from mybatis.user where id=#{id}
+    </delete>
+
+    <select id="queryUserById" parameterType="int" resultMap="UserDaoResult">
+        <include refid="selectUserVo" />
+        where  id=#{id}
+    </select>
+
+    <select id="countUserByName" parameterType="String" resultType="Integer">
+        select count(id) from mybatis.user
+        where  name=#{name}
+    </select>
+
+    <update id="updateUser" parameterType="User">
+        update mybatis.user
+        set name = #{name},pwd = #{pwd}
+        where id = #{id}
+    </update>
+
+    <insert id="addUser" parameterType="User">
+        insert into user(name, pwd) values (#{name},#{pwd})
+    </insert>
+</mapper>
